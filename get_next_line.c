@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 14:36:33 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/06 16:13:19 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static char	*get_line(t_list *list)
 		k = 0;
 		while (list->content[k] != '\0')
 		{
-			line[i] = list->content[k];
+			if (list->content[k] != '\n')
+				line[i] = list->content[k];
 			i++;
 			k++;
 		}
@@ -123,10 +124,9 @@ char	*get_next_line(int fd)
 // int main(void)
 // {
 // 	int fd = open("bonjour.txt", O_RDWR | O_CREAT);
-// 	printf("PF ==== FD : %i ==== \n", fd);
 // 	char *chargnl;
 // 	chargnl = get_next_line(fd);
-// 	printf(" === GNL === \n%s\n===========", chargnl);
+// 	printf("=== GNL ===\n%s\n===========", chargnl);
 // 	free(chargnl);
 // 	return 0;
 // }
