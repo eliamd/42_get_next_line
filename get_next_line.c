@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 16:13:19 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/06 16:30:15 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*get_line(t_list *list)
 		return (NULL);
 	i = 0;
 	line_len = count_len(list);
-	line = malloc(line_len + 1);
+	line = malloc(line_len + 1 * sizeof(char));
 	while (list)
 	{
 		k = 0;
@@ -59,7 +59,7 @@ static char	*get_line(t_list *list)
 		}
 		list = list->next;
 	}
-	line[line_len + 1] = '\0';
+	line[line_len] = '\0';
 	return (line);
 }
 
@@ -126,7 +126,7 @@ char	*get_next_line(int fd)
 // 	int fd = open("bonjour.txt", O_RDWR | O_CREAT);
 // 	char *chargnl;
 // 	chargnl = get_next_line(fd);
-// 	printf("=== GNL ===\n%s\n===========", chargnl);
+// 	printf("%s", chargnl);
 // 	free(chargnl);
 // 	return 0;
 // }
