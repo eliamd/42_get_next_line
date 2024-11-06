@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 16:30:15 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/06 19:17:53 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	count_len(t_list *list)
 		{
 			if (list->content[k] == '\n')
 			{
+				line_len++;
 				return (line_len);
 			}
 			k++;
@@ -32,7 +33,7 @@ static int	count_len(t_list *list)
 		}
 		list = list->next;
 	}
-	return (0);
+	return (line_len);
 }
 
 static char	*get_line(t_list *list)
@@ -42,28 +43,29 @@ static char	*get_line(t_list *list)
 	int		k;
 	int		i;
 
-	if (!list)
-		return (NULL);
-	i = 0;
+	k = 0;
 	line_len = count_len(list);
-	line = malloc(line_len + 1 * sizeof(char));
+	line = malloc((line_len + 1) * sizeof(char));
 	while (list)
 	{
-		k = 0;
-		while (list->content[k] != '\0')
+		i = 0;
+		while (list->content[i])
 		{
-			if (list->content[k] != '\n')
-				line[i] = list->content[k];
-			i++;
-			k++;
+			if (list->content[i] == '\n')
+			{
+				line[k++] = '\n';
+				line[k] = '\0';
+				return (line);
+			}
+			line[k++] = list->content[i++];
 		}
 		list = list->next;
 	}
-	line[line_len] = '\0';
+	line[k] = '\0';
 	return (line);
 }
 
-static int	found_newline(t_list *list)
+int	found_newline(t_list *list)
 {
 	char	*last_content_string;
 	int		i;
@@ -81,25 +83,29 @@ static int	found_newline(t_list *list)
 	return (0);
 }
 
-static void	create_list(t_list **list, int fd)
+void	polish_list(t_list **list)
 {
-	int			char_read;
-	char		*buffer;
+	t_list	*last_node;
+	t_list	*clean_node;
+	int		i;
+	int		k;
+	char	*buf;
 
-	while (!found_newline(*list))
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return ;
-		char_read = read(fd, buffer, BUFFER_SIZE);
-		if (!char_read)
-		{
-			free(buffer);
-			return ;
-		}
-		buffer[char_read] = '\0';
-		ft_lstadd_back(list, ft_lstnew(buffer));
-	}
+	buf = malloc(BUFFER_SIZE + 1);
+	clean_node = malloc(sizeof(t_list));
+	if (!buf || !clean_node)
+		return ;
+	last_node = ft_lstlast(*list);
+	i = 0;
+	k = 0;
+	while (last_node->content[i] && last_node->content[i] != '\n')
+		++i;
+	while (last_node->content[i] && last_node->content[++i])
+		buf[k++] = last_node->content[i];
+	buf[k] = '\0';
+	clean_node->content = buf;
+	clean_node->next = NULL;
+	dealloc(list, clean_node, buf);
 }
 
 char	*get_next_line(int fd)
@@ -113,7 +119,7 @@ char	*get_next_line(int fd)
 	if (list == NULL)
 		return (NULL);
 	next_line = get_line(list);
-	ft_lstclear(&list);
+	polish_list(&list);
 	return (next_line);
 }
 
@@ -123,10 +129,12 @@ char	*get_next_line(int fd)
 
 // int main(void)
 // {
-// 	int fd = open("bonjour.txt", O_RDWR | O_CREAT);
+// 	int fd = open("bonjour.txt", O_RDONLY);
+// 	int line = 1;
 // 	char *chargnl;
-// 	chargnl = get_next_line(fd);
-// 	printf("%s", chargnl);
+
+// 	while ((chargnl = get_next_line(fd)))
+// 		printf("%d -> %s\n", line++, chargnl);
 // 	free(chargnl);
 // 	return 0;
 // }

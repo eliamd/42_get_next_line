@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:13:45 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 14:32:34 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/06 19:13:35 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-char	*get_next_line(int fd);
+int				found_newline(t_list *list);
+void			polish_list(t_list **list);
+void			ft_lstadd_back(t_list **lst, char *buffer);
+void			dealloc(t_list **list, t_list *clean_node, char *buf);
+t_list			*ft_lstlast(t_list *lst);
+char			*ft_strdup(const char *s);
+void			create_list(t_list **list, int fd);
 
-void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstnew(void *content);
-void	ft_lstclear(t_list **lst);
-t_list	*ft_lstlast(t_list *lst);
+char			*get_next_line(int fd);
 
 #endif
