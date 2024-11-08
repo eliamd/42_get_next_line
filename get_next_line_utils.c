@@ -6,13 +6,13 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 10:18:06 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/08 15:41:52 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/08 16:54:49 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_lstadd_back(t_list **lst, char *buffer)
+void	create_and_add_nodeback(t_list **lst, char *buffer)
 {
 	t_list	*new_node;
 	t_list	*last_node;
@@ -104,6 +104,6 @@ void	create_list(t_list **list, int fd)
 			return ;
 		}
 		buffer[char_read] = '\0';
-		ft_lstadd_back(list, buffer);
+		create_and_add_nodeback(list, buffer);
 	}
 }

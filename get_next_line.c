@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/08 16:53:01 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/08 16:55:32 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,23 +126,23 @@ char	*get_next_line(int fd)
 	return (next_line);
 }
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+// #include <sys/types.h>
+// #include <sys/stat.h>
+// #include <fcntl.h>
 
-int main(void)
-{
-	int fd = open("test.test", O_RDONLY);
-	char *chargnl;
-	while (1)
-	{
-		chargnl = get_next_line(fd);
-		printf("%s", chargnl);
-		if (!chargnl)
-			break ;
-		free(chargnl);
+// int main(void)
+// {
+// 	int fd = open("bonjour.txt", O_RDONLY);
+// 	char *chargnl;
+// 	while (1)
+// 	{
+// 		chargnl = get_next_line(fd);
+// 		printf("%s", chargnl);
+// 		if (!chargnl)
+// 			break ;
+// 		free(chargnl);
 
-	}
-	free(chargnl);
-	return 0;
-}
+// 	}
+// 	free(chargnl);
+// 	return 0;
+// }
