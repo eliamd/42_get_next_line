@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 19:17:53 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/08 16:53:01 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,15 @@ static char	*get_line(t_list *list)
 	k = 0;
 	line_len = count_len(list);
 	line = malloc((line_len + 1) * sizeof(char));
+	if (!line)
+		return (NULL);
 	while (list)
 	{
 		i = 0;
-		while (list->content[i])
+		while (list->content[i] != '\0')
 		{
 			if (list->content[i] == '\n')
-			{
-				line[k++] = '\n';
-				line[k] = '\0';
-				return (line);
-			}
+				return (line[k++] = '\n', line[k] = '\0', line);
 			line[k++] = list->content[i++];
 		}
 		list = list->next;
@@ -83,7 +81,7 @@ int	found_newline(t_list *list)
 	return (0);
 }
 
-void	polish_list(t_list **list)
+void	clean_list(t_list **list)
 {
 	t_list	*last_node;
 	t_list	*clean_node;
@@ -92,14 +90,16 @@ void	polish_list(t_list **list)
 	char	*buf;
 
 	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return ;
 	clean_node = malloc(sizeof(t_list));
-	if (!buf || !clean_node)
+	if (!clean_node)
 		return ;
 	last_node = ft_lstlast(*list);
 	i = 0;
 	k = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
-		++i;
+		i++;
 	while (last_node->content[i] && last_node->content[++i])
 		buf[k++] = last_node->content[i];
 	buf[k] = '\0';
@@ -113,28 +113,36 @@ char	*get_next_line(int fd)
 	static t_list	*list = NULL;
 	char			*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(list);
 		return (NULL);
+	}
 	create_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
 	next_line = get_line(list);
-	polish_list(&list);
+	clean_list(&list);
 	return (next_line);
 }
 
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-// int main(void)
-// {
-// 	int fd = open("bonjour.txt", O_RDONLY);
-// 	int line = 1;
-// 	char *chargnl;
+int main(void)
+{
+	int fd = open("test.test", O_RDONLY);
+	char *chargnl;
+	while (1)
+	{
+		chargnl = get_next_line(fd);
+		printf("%s", chargnl);
+		if (!chargnl)
+			break ;
+		free(chargnl);
 
-// 	while ((chargnl = get_next_line(fd)))
-// 		printf("%d -> %s\n", line++, chargnl);
-// 	free(chargnl);
-// 	return 0;
-// }
+	}
+	free(chargnl);
+	return 0;
+}

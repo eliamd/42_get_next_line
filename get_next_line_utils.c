@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 10:18:06 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/06 19:12:53 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/08 15:41:52 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	dealloc(t_list **list, t_list *clean_node, char *buf)
 {
 	t_list	*tmp;
 
-	if (NULL == *list)
+	if (!*list)
 		return ;
 	while (*list)
 	{
