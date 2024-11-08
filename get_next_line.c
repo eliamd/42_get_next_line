@@ -6,7 +6,7 @@
 /*   By: edetoh <edetoh@student.42lehavre.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:04:50 by edetoh            #+#    #+#             */
-/*   Updated: 2024/11/08 16:55:32 by edetoh           ###   ########.fr       */
+/*   Updated: 2024/11/08 17:06:00 by edetoh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	create_list(&list, fd);
-	if (list == NULL)
+	if (!list)
 		return (NULL);
 	next_line = get_line(list);
 	clean_list(&list);
